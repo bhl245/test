@@ -1,0 +1,9 @@
+git clone "地址"--下载源码
+git status--查看当前分支是否更新
+git add .(所有文件)| 文件名--新加文件需要add
+git pull--获取服务器中最新文件
+git commit -m "注释"--提交到本地仓库
+git push--提交到远程仓库
+git reset HEAD <filename>
+
+
