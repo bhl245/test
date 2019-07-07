@@ -1,0 +1,11 @@
+@CHARSET "UTF-8";
+
+*{ margin:0; padding:0;}
+body{ background-color: #FCEECB;}
+
+#father{ clear: both; margin:0 auto; margin-top: 100px; width: 550px; height: 371px;
+		text-align: center; background-image: url("../Images/managerLand.jpg"); }
+	#son1{ padding-top: 320px; }
+		#account,#password,#zhspan,#mmspan{ vertical-align:middle; }
+		#loginbtn{ background-image: url("../Images/land.gif"); width: 69px; height: 32px; 
+				border: 0px; cursor: pointer;  vertical-align:middle; }
