@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx.xsd">
+    <!--打开spring的注解支持-->
+    <context:annotation-config/>
+
+    <!--对文件进行扫描-->
+    <context:component-scan base-package="com.hgkj.*"/>
+
+    <!--c3p0连接池-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/tourism?characterEncoding=utf-8"/>
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="user" value="root"/>
+        <property name="password" value="root"/>
+    </bean>
+
+    <!--sessionFactory配置 可以省略hibernate.cfg.xml配置文件-->
+    <!--使用jpa注解形式的pojo对象，而去掉*.hbm.xml的Hibernate映射文件-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <!--配置数据源-->
+        <property name="dataSource" ref="dataSource"/>
+        <!-- 设置spring去哪个包中查找相应的实体类 -->
+        <property name="packagesToScan">
+            <list>
+                <value>com.hgkj.model.entity</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
+                <!--是否自动创建表结构-->
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <!--方言-->
+                <prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+                <!--hibernate中事务是需要在dao执行sql相关语句时来手动开启的，
+                然后底层实现代码时由getCurrentSession得到的session中可以得到transaction，所以可以正常运行.
+                 这里，需要因为我们把sessionFactory的产生放在spring配置文件中，即让服务器启动时就创建这个对象，这样的话它就被存在一个上下文环境中，即在SpringSessionContext中保存
+所以我们要把绑定当前线程session改成绑定这个spring上下文环境，即设置为由spring环境管理(因为事务aop也是在spring中),这时spring中的事务配置才会起作用(当然,以前是thread上下文环境的session,
+而事务托管在spring上下文中,当然spring无法管理到thread上下文的session的事务）。-->
+                <prop key="hibernate.current_session_context_class">
+                    org.springframework.orm.hibernate5.SpringSessionContext
+                </prop>
+            </props>
+        </property>
+        <property name="mappingResources">
+            <list>
+                <value>xml/Car.hbm.xml</value>
+                <value>xml/Customer.hbm.xml</value>
+                <value>xml/Line.hbm.xml</value>
+                <value>xml/LineType.hbm.xml</value>
+                <value>xml/OrderDetail.hbm.xml</value>
+                <value>xml/OtDetail.hbm.xml</value>
+                <value>xml/Picture.hbm.xml</value>
+                <value>xml/Tourist.hbm.xml</value>
+            </list>
+        </property>
+        <!--自动扫描注解方式的hibernate类文件-->
+    </bean>
+
+    <!--事务管理器-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!-- 基于注解的事务，当注解中发现@Transactional时，使用id为“transactionManager”的事务管理器 -->
+    <!-- 如果没有设置transaction-manager的值，则spring以缺省默认的事务管理器来处理事务，
+    默认事务管理器为第一个加载的事务管理器 -->
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+</beans>

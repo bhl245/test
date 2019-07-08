@@ -1,0 +1,17 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.hgkj.model.entity.LineType" table="linetype" schema="tourism">
+        <id name="lineTypeId" column="lineTypeId"/>
+        <property name="lineTypeName" column="lineTypeName"/>
+        <property name="time" column="time"/>
+        <property name="icon" column="icon"/>
+        <set name="lineSet" inverse="true" lazy="false">
+            <key column="lineTypeId"/>
+            <one-to-many class="com.hgkj.model.entity.Line"/>
+        </set>
+    </class>
+</hibernate-mapping>

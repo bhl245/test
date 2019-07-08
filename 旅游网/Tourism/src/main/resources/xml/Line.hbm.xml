@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.hgkj.model.entity.Line" table="line" schema="tourism">
+        <id name="lineId" column="lineId"/>
+        <property name="lineName" column="lineName"/>
+        <property name="days" column="days"/>
+        <property name="vehicle" column="vehicle"/>
+        <property name="introduction" column="introduction"/>
+        <property name="reason" column="reason"/>
+        <property name="arrange" column="arrange"/>
+        <property name="price" column="price"/>
+        <property name="teamBuy" column="teamBuy"/>
+        <property name="teamBuyPrice" column="teamBuyPrice"/>
+        <property name="beginTime" column="beginTime"/>
+        <property name="endTime" column="endTime"/>
+        <property name="onTime" column="onTime"/>
+        <many-to-one name="lineType"
+                     class="com.hgkj.model.entity.LineType"
+                     column="lineTypeId"
+                     lazy="false"/>
+        <set name="pictureSet" inverse="true" lazy="false" cascade="all">
+            <key column="lineId"/>
+            <one-to-many class="com.hgkj.model.entity.Picture"/>
+        </set>
+    </class>
+</hibernate-mapping>

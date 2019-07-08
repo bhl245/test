@@ -1,0 +1,16 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.hgkj.model.entity.OrderDetail" table="orderdetail" schema="tourism">
+        <id name="odId" column="odId"/>
+        <property name="lineName" column="lineName"/>
+        <property name="price" column="price"/>
+        <property name="orderDate" column="orderDate"/>
+        <property name="travelDate" column="travelDate"/>
+        <property name="total" column="total"/>
+        <property name="state" column="state"/>
+    </class>
+</hibernate-mapping>
