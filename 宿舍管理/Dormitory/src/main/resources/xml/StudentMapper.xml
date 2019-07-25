@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hgkj.model.dao.StudentMapper">
+    <resultMap id="StudentMap" type="com.hgkj.model.entity.Student">
+        <id column="Student_ID" property="studentId" jdbcType="INTEGER"/>
+        <result column="Student_Username" property="studentUsername" jdbcType="VARCHAR"/>
+        <result column="Student_Password" property="studentPassword" jdbcType="VARCHAR"/>
+        <result column="Student_Name" property="studentName" jdbcType="VARCHAR"/>
+        <result column="Student_Sex" property="studentSex" jdbcType="VARCHAR"/>
+        <result column="Student_Class" property="studentClass" jdbcType="VARCHAR"/>
+        <result column="Student_State" property="studentState" jdbcType="VARCHAR"/>
+        <association property="domitory" javaType="Domitory" column="Student_DomitoryID" select="selectDomitoryByStudent"/>
+        <collection property="logList" ofType="Log" column="Student_ID" select="selectLogByStudent"/>
+    </resultMap>
+    <sql id="StudentColumn">
+      Student_ID, Student_DomitoryID, Student_Username, Student_Password, Student_Name, Student_Sex, Student_Class, Student_State
+    </sql>
+    <!--学生登录-->
+    <select id="studentLoginDao" resultMap="StudentMap" parameterType="Student">
+        select
+        <include refid="StudentColumn"/>
+        from student where Student_Username=#{studentUsername} and Student_Password=#{studentPassword}
+    </select>
+    <!--修改学生密码-->
+    <update id="studentPwdUpdateDao" parameterType="Student">
+        update student set Student_Password=#{studentPassword} where Student_ID=#{studentId}
+    </update>
+    <!--根据学生Id查询详细信息-->
+    <select id="getStudentByIdDao" resultMap="StudentMap" parameterType="int">
+        select
+        <include refid="StudentColumn"/>
+        from student where Student_ID=#{studentId}
+    </select>
+    <!--级联查询寝室信息-->
+    <select id="selectDomitoryByStudent" resultType="Domitory" parameterType="int">
+        select Domitory_ID as domitoryId, Domitory_BuildingID as domitoryBuildingid, Domitory_Name as domitoryName,
+        Domitory_Type as domitoryType, Domitory_Number as domitoryNumber, Domitory_Tel as domitoryTel
+        from domitory where Domitory_ID=#{domitoryId}
+    </select>
+    <!--级联查询Log信息-->
+    <select id="selectLogByStudent" resultType="Log" parameterType="int">
+        select Log_ID as logId, Log_StudentID as logStudentid, Log_TeacherID as logTeacherid, Log_Date as logDate,
+        Log_Remark as logRemark from log where Log_StudentID=#{studentId}
+    </select>
+    <!--查询所有学生信息-->
+    <select id="allStudentDao" resultMap="StudentMap">
+        select
+        <include refid="StudentColumn"/>
+        from student
+    </select>
+    <!--添加学生信息-->
+    <insert id="insertStudentDao" parameterType="Student">
+        insert into student(Student_Username, Student_Password, Student_Name, Student_Sex, Student_Class, Student_State)
+        values (#{studentUsername},#{studentPassword},#{studentName},#{studentSex},#{studentClass},#{studentState})
+    </insert>
+    <!--删除学生信息-->
+    <delete id="deleteStudentDao" parameterType="int">
+        delete from student where Student_ID=#{studentId}
+    </delete>
+    <!--修改学生信息-->
+    <update id="updateStudentDao" parameterType="Student">
+        update student set Student_Username=#{studentUsername}, Student_Password=#{studentPassword}, Student_Name=#{studentName},
+        Student_Sex=#{studentSex}, Student_Class=#{studentClass}, Student_State=#{studentState} where Student_ID=#{studentId}
+    </update>
+    <!--根据学生姓名模糊查询-->
+    <select id="cascadeStudentNameDao" resultMap="StudentMap">
+        select
+        <include refid="StudentColumn"/>
+        from student where Student_State=#{studentState} and Student_Name like "%"#{studentName}"%"
+    </select>
+    <!--根据学生用户名模糊查询-->
+    <select id="cascadeStudentUsernameDao" resultMap="StudentMap">
+        select
+        <include refid="StudentColumn"/>
+        from student where Student_State=#{studentState} and Student_Username like "%"#{studentUsername}"%"
+    </select>
+    <!--根据学生班级模糊查询-->
+    <select id="cascadeStudentClassDao" resultMap="StudentMap">
+        select
+        <include refid="StudentColumn"/>
+        from student where Student_State=#{studentState} and Student_Class like "%"#{studentClass}"%"
+    </select>
+    <!--根据用户名查询学生信息-->
+    <select id="getStudentUsernameDao" resultMap="StudentMap" parameterType="string">
+        select
+        <include refid="StudentColumn"/>
+        from student where Student_Username=#{studentUsername}
+    </select>
+    <!--修改学生宿舍信息-->
+    <update id="updateStudentByDomitoryDao" parameterType="int">
+        update student set Student_DomitoryID=#{domitoryId} where Student_ID=#{studentId}
+    </update>
+</mapper>

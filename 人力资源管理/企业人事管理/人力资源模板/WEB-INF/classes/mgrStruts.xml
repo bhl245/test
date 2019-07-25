@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<package name="mgrStruts-default" extends="struts2" namespace="/manager">
+	<!-- 用户登录验证 -->
+	<action name="mgrLogin" class="com.kiko.action.MgrAction">
+		<result name="success" type="redirect">/mgrMainPage.jsp</result>
+		<result name="failure">../mgrLogin.jsp</result>
+	</action>
+	
+	<!-- 用户安全退出 -->
+	<action name="mgrExit" class="com.kiko.action.MgrAction">
+		<result name="success" type="redirect">../mgrLogin.jsp</result>
+	</action>
+	
+	<!-- 用户显示 -->
+	<action name="mgrShow" class="com.kiko.action.MgrAction">
+		<result name="success" type="redirect">managerMgr.jsp</result>
+	</action>
+	
+	<!-- 用户删除 -->
+	<action name="mgrDel" class="com.kiko.action.MgrAction">
+		<result name="success" type="redirectAction">mgrShow!mgrShows</result>
+		<result name="failure" type="redirect">managerMgr.jsp</result>
+	</action>
+	
+</package>
+
+<package name="mgrStrutAjax-default" extends="strutAjax" namespace="/manager">
+	<!-- 修改用户密码 -->
+	<action name="mgrUpdAjax" class="com.kiko.action.MgrAction">
+		<result type="json">
+			<param name="root">result</param>
+		</result>
+	</action>
+	
+	<!-- 添加新用户 -->
+	<action name="mgrAddAjax" class="com.kiko.action.MgrAction">
+		<result type="json">
+			<param name="root">result</param>
+		</result>
+	</action>
+	
+	<!-- 判断用户是否存在 -->
+	<action name="mgrActCKAjax" class="com.kiko.action.MgrAction">
+		<result type="json">
+			<param name="root">result</param>
+		</result>
+	</action>
+	
+</package>
+</struts>    

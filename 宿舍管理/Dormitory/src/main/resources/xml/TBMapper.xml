@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hgkj.model.dao.TBMapper">
+    <resultMap id="TBMap" type="com.hgkj.model.entity.TB">
+        <id column="TB_ID" property="tbId" jdbcType="INTEGER"/>
+        <association property="teacher" javaType="Teacher" column="TB_TeacherID" select="selectTeacherByTB"/>
+        <association property="building" javaType="Building" column="TB_BuildingID" select="selectBuildingByTB"/>
+    </resultMap>
+    <sql id="TBColumn">TB_ID, TB_TeacherID, TB_BuildingID</sql>
+    <!--级联查询楼宇管理员-->
+    <select id="selectTeacherByTB" resultType="Teacher" parameterType="int">
+        select Teacher_ID as teacherId, Teacher_Username as teacherUsername, Teacher_Password as teacherPassword,
+        Teacher_Name as teacherName, Teacher_Sex as teacherSex, Teacher_Tel as teacherTel
+        from teacher where Teacher_ID=#{teacherId}
+    </select>
+    <!--级联查询楼宇-->
+    <select id="selectBuildingByTB" resultType="Building" parameterType="int">
+        select Building_ID as buildingId, Building_Name as buildingName, Building_Introduction as buildingIntroduction
+        from building where Building_ID=#{buildingId}
+    </select>
+</mapper>

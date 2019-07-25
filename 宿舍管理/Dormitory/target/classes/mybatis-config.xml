@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>     
+    	<!-- 允许JDBC支持生成的键 -->
+        <setting name="useGeneratedKeys" value="true"/>
+		<setting name="logImpl" value="LOG4J"/>
+	</settings>
+	<typeAliases>
+		<!-- 配置数据类型的别名 -->
+		<typeAlias type="com.hgkj.model.entity.Admin"  alias="Admin"/>
+		<typeAlias type="com.hgkj.model.entity.Building"  alias="Building"/>
+		<typeAlias type="com.hgkj.model.entity.Domitory"  alias="Domitory"/>
+		<typeAlias type="com.hgkj.model.entity.Log"  alias="Log"/>
+		<typeAlias type="com.hgkj.model.entity.Out1" alias="Out"/>
+		<typeAlias type="com.hgkj.model.entity.Student"  alias="Student"/>
+		<typeAlias type="com.hgkj.model.entity.TB"  alias="TB"/>
+		<typeAlias type="com.hgkj.model.entity.Teacher"  alias="Teacher"/>
+	</typeAliases>
+	<mappers>
+		<!-- 配置映射文件 -->
+		<mapper resource="xml/AdminMapper.xml"/>
+		<mapper resource="xml/BuildingMapper.xml"/>
+		<mapper resource="xml/DomitoryMapper.xml"/>
+		<mapper resource="xml/LogMapper.xml"/>
+		<mapper resource="xml/OutMapper.xml"/>
+		<mapper resource="xml/StudentMapper.xml"/>
+		<mapper resource="xml/TBMapper.xml"/>
+		<mapper resource="xml/TeacherMapper.xml"/>
+	</mappers>
+</configuration>

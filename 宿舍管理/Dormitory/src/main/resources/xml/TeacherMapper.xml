@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hgkj.model.dao.TeacherMapper">
+    <resultMap id="TeacherMap" type="com.hgkj.model.entity.Teacher">
+        <id column="Teacher_ID" property="teacherId" jdbcType="INTEGER"/>
+        <result column="Teacher_Username" property="teacherUsername" jdbcType="VARCHAR"/>
+        <result column="Teacher_Password" property="teacherPassword" jdbcType="VARCHAR"/>
+        <result column="Teacher_Name" property="teacherName" jdbcType="VARCHAR"/>
+        <result column="Teacher_Sex" property="teacherSex" jdbcType="VARCHAR"/>
+        <result column="Teacher_Tel" property="teacherTel" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="TeacherColumn">Teacher_ID, Teacher_Username, Teacher_Password, Teacher_Name, Teacher_Sex, Teacher_Tel</sql>
+    <!--楼宇管理员登录-->
+    <select id="teacherLoginDao" resultMap="TeacherMap" parameterType="Teacher">
+        select
+        <include refid="TeacherColumn"/>
+        from teacher where Teacher_Username=#{teacherUsername} and Teacher_Password=#{teacherPassword}
+    </select>
+    <!--修改楼宇管理员密码-->
+    <update id="teacherPwdUpdateDao" parameterType="Teacher">
+        update teacher set Teacher_Password=#{teacherPassword} where Teacher_ID=#{teacherId}
+    </update>
+    <!--根据Id查询楼宇管理员信息-->
+    <select id="getTeacherByIdDao" resultMap="TeacherMap" parameterType="int">
+        select
+        <include refid="TeacherColumn"/>
+        from teacher where Teacher_ID=#{teacherId}
+    </select>
+    <!--查询所有楼宇管理员信息-->
+    <select id="allTeacherDao" resultMap="TeacherMap">
+        select
+        <include refid="TeacherColumn"/>
+        from teacher
+    </select>
+    <!--添加楼宇管理员信息-->
+    <insert id="insertTeacherDao" parameterType="Teacher">
+        insert into teacher(Teacher_Username, Teacher_Password, Teacher_Name, Teacher_Sex, Teacher_Tel)
+        values (#{teacherUsername},#{teacherPassword},#{teacherName},#{teacherSex},#{teacherTel})
+    </insert>
+    <!--删除楼宇管理员-->
+    <delete id="deleteTeacherDao" parameterType="int">
+        delete from teacher where Teacher_ID=#{teacherId}
+    </delete>
+    <!--修改楼宇管理员信息-->
+    <update id="updateTeacherDao" parameterType="Teacher">
+        update teacher set Teacher_Username=#{teacherUsername}, Teacher_Password=#{teacherPassword}, Teacher_Name=#{teacherName},
+        Teacher_Sex=#{teacherSex}, Teacher_Tel=#{teacherTel} where Teacher_ID=#{teacherId}
+    </update>
+    <!--根据姓名模糊查询-->
+    <select id="cascadeTeacherNameDao" resultMap="TeacherMap" parameterType="string">
+        select
+        <include refid="TeacherColumn"/>
+        from teacher where Teacher_Name like "%"#{teacherName}"%"
+    </select>
+    <!--根据电话模糊查询-->
+    <select id="cascadeTeacherTelDao" resultMap="TeacherMap" parameterType="string">
+        select
+        <include refid="TeacherColumn"/>
+        from teacher where Teacher_Tel like "%"#{teacherTel}"%"
+    </select>
+    <!--根据用户名模糊查询-->
+    <select id="cascadeTeacherUsernameDao" resultMap="TeacherMap" parameterType="string">
+        select
+        <include refid="TeacherColumn"/>
+        from teacher where Teacher_Username like "%"#{teacherUsername}"%"
+    </select>
+</mapper>

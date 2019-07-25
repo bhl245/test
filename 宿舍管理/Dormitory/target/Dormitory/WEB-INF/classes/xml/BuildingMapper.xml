@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hgkj.model.dao.BuildingMapper">
+    <resultMap id="BuildingMap" type="com.hgkj.model.entity.Building">
+        <id column="Building_ID" property="buildingId" jdbcType="INTEGER"/>
+        <result column="Building_Name" property="buildingName" jdbcType="VARCHAR"/>
+        <result column="Building_Introduction" property="buildingIntroduction" jdbcType="VARCHAR"/>
+        <collection property="domitoryList" ofType="Domitory" column="Building_ID" select="selectDomitoryByBuilding"/>
+    </resultMap>
+    <sql id="BuildingColumn">Building_ID, Building_Name, Building_Introduction</sql>
+    <!--级联查询宿舍-->
+    <select id="selectDomitoryByBuilding" resultType="Domitory" parameterType="int">
+        select Domitory_ID as domitoryId, Domitory_BuildingID as domitoryBuildingid, Domitory_Name as domitoryName,
+        Domitory_Type as domitoryType, Domitory_Number as domitoryNumber, Domitory_Tel as domitoryTel
+        from domitory where Domitory_BuildingID=#{buildingId}
+    </select>
+    <!--查询所有楼宇-->
+    <select id="allBuildingDao" resultMap="BuildingMap">
+        select
+        <include refid="BuildingColumn"/>
+        from building
+    </select>
+    <!--添加楼宇信息-->
+    <insert id="insertBuildingDao" parameterType="Building">
+        insert into building(Building_Name, Building_Introduction) values (#{buildingName},#{buildingIntroduction})
+    </insert>
+    <!--删除楼宇信息-->
+    <delete id="deleteBuildingDao" parameterType="int">
+        delete from building where Building_ID=#{buildingId}
+    </delete>
+    <!--修改楼宇信息-->
+    <update id="updateBuildingDao" parameterType="Building">
+        update building set Building_Name=#{buildingName}, Building_Introduction=#{buildingIntroduction}
+        where Building_ID=#{buildingId}
+    </update>
+    <!--根据Id查询楼宇信息-->
+    <select id="getBuildingByIdDao" resultMap="BuildingMap" parameterType="int">
+        select
+        <include refid="BuildingColumn"/>
+        from building where Building_ID=#{buildingId}
+    </select>
+    <!--根据名称模糊查询-->
+    <select id="cascadeBuildingNameDao" resultMap="BuildingMap" parameterType="string">
+        select
+        <include refid="BuildingColumn"/>
+        from building where Building_Name like "%"#{buildingName}"%"
+    </select>
+</mapper>

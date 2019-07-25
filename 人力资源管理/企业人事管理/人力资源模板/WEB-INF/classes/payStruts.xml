@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<package name="payStruts-default" extends="struts2" namespace="/pay">
+	<!-- 判断是否按年月查询 -->
+	<action name="ymSelect" class="com.kiko.action.PayAction">
+		<result name="success" type="redirectAction">payShow!payShows</result>
+	</action>
+	
+	<!-- 薪资信息显示 -->
+	<action name="payShow" class="com.kiko.action.PayAction">
+		<result name="success" type="redirect">payMgr.jsp</result>
+	</action>
+	
+	<!-- 按员工名称查 -->
+	<action name="emSelect" class="com.kiko.action.PayAction">
+		<result name="success" type="redirect">payMgr.jsp</result>
+	</action>
+	
+	<!-- 年月员工名一起查 -->
+	<action name="ymemSelect" class="com.kiko.action.PayAction">
+		<result name="success" type="redirect">payMgr.jsp</result>
+	</action>
+	
+	<!-- 薪资信息删除 -->
+	<action name="payDel" class="com.kiko.action.PayAction">
+		<result name="success" type="redirectAction">payShow!payShows</result>
+		<result name="failure" type="redirect">payMgr.jsp</result>
+	</action>
+	
+	
+</package>
+
+<package name="payStrutAjax-default" extends="strutAjax" namespace="/pay">
+	<!-- 添加应聘信息 -->
+	<action name="payAddAjax" class="com.kiko.action.PayAction">
+		<result type="json">
+			<param name="root">result</param>
+		</result>
+	</action>
+	
+</package>
+</struts>    

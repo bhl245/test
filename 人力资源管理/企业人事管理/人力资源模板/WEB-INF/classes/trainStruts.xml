@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<package name="trainStruts-default" extends="struts2" namespace="/train">
+	<!-- 培训信息显示 -->
+	<action name="tnShow" class="com.kiko.action.TrainAction">
+		<result name="success" type="redirect">trainMgr.jsp</result>
+	</action>
+	
+	<!-- 培训信息删除 -->
+	<action name="tnDel" class="com.kiko.action.TrainAction">
+		<result name="success" type="redirectAction">tnShow!tnShows</result>
+		<result name="failure" type="redirect">trainMgr.jsp</result>
+	</action>
+	
+	<!-- 跳转至培训查看详情 -->
+	<action name="dSelectTn" class="com.kiko.action.TrainAction">
+		<result name="success" type="redirect">trainSel.jsp</result>
+	</action>
+	
+</package>
+
+<package name="trainStrutAjax-default" extends="strutAjax" namespace="/train">
+	<!-- 添加培训信息 -->
+	<action name="tnAddAjax" class="com.kiko.action.TrainAction">
+		<result type="json">
+			<param name="root">result</param>
+		</result>
+	</action>
+	
+</package>
+</struts>    

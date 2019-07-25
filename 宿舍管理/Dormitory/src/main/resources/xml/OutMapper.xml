@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hgkj.model.dao.OutMapper">
+    <resultMap id="OutMap" type="com.hgkj.model.entity.Out1">
+        <id column="Out_ID" property="outId" jdbcType="INTEGER"/>
+        <result column="Out_Date" property="outDate" jdbcType="VARCHAR"/>
+        <result column="Out_Remark" property="outRemark" jdbcType="VARCHAR"/>
+        <association property="student" javaType="Student" column="Out_StudentID" select="selectStudentByOut"/>
+    </resultMap>
+    <sql id="OutColumn">Out_ID, Out_StudentID, Out_Date, Out_Remark</sql>
+    <!--级联查询学生信息-->
+    <select id="selectStudentByOut" resultType="Student" parameterType="int">
+        select Student_ID as studentId, Student_DomitoryID as studentDomitoryid, Student_Username as studentUsername,
+        Student_Password as studentPassword, Student_Name as studentName, Student_Sex as studentSex, Student_Class as studentClass,
+        Student_State as studentState from student where Student_ID=#{studentId}
+    </select>
+    <!--查询所有迁出记录-->
+    <select id="allOutDao" resultMap="OutMap">
+        select
+        <include refid="OutColumn"/>
+        from out1
+    </select>
+</mapper>

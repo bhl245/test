@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hgkj.model.dao.DomitoryMapper">
+    <resultMap id="DomitoryMap" type="com.hgkj.model.entity.Domitory">
+        <id column="Domitory_ID" property="domitoryId" jdbcType="INTEGER"/>
+        <result column="Domitory_Name" property="domitoryName" jdbcType="VARCHAR"/>
+        <result column="Domitory_Type" property="domitoryType" jdbcType="VARCHAR"/>
+        <result column="Domitory_Number" property="domitoryNumber" jdbcType="VARCHAR"/>
+        <result column="Domitory_Tel" property="domitoryTel" jdbcType="VARCHAR"/>
+        <association property="building" javaType="Building" column="Domitory_BuildingID" select="selectBuildingByDomitory"/>
+        <collection property="studentList" ofType="Student" column="Domitory_ID" select="selectStudentByDomitory"/>
+    </resultMap>
+    <sql id="DomitoryColumn">
+        Domitory_ID, Domitory_BuildingID, Domitory_Name, Domitory_Type, Domitory_Number, Domitory_Tel
+    </sql>
+    <!--级联查询学生信息-->
+    <select id="selectStudentByDomitory" resultType="Student" parameterType="int">
+        select Student_ID as studentId, Student_DomitoryID as studentDomitoryid, Student_Username as studentUsername,
+        Student_Password as studentPassword,  Student_Name as studentName, Student_Sex as studentSex, Student_Class as
+        studentClass, Student_State as studentState from student where Student_DomitoryID=#{domitoryId}
+    </select>
+    <!--级联查询楼宇信息-->
+    <select id="selectBuildingByDomitory" resultType="Building" parameterType="int">
+        select Building_ID as buildingId, Building_Name as buildingName, Building_Introduction as buildingIntroduction
+        from building where Building_ID=#{buildingId}
+    </select>
+    <!--查询所有宿舍信息-->
+    <select id="allDomitoryDao" resultMap="DomitoryMap">
+        select
+        <include refid="DomitoryColumn"/>
+        from domitory
+    </select>
+    <!--添加宿舍信息-->
+    <insert id="insertDomitoryDao" parameterType="Domitory">
+        insert into domitory(Domitory_BuildingID, Domitory_Name, Domitory_Type, Domitory_Number, Domitory_Tel)
+        values (#{building.buildingId},#{domitoryName},#{domitoryType},#{domitoryNumber},#{domitoryTel})
+    </insert>
+    <!--删除宿舍-->
+    <delete id="deleteDomitoryDao" parameterType="int">
+        delete from domitory where Domitory_ID=#{domitoryId}
+    </delete>
+    <!--修改宿舍信息-->
+    <update id="updateDomitoryDao" parameterType="Domitory">
+        update domitory set Domitory_BuildingID=#{building.buildingId}, Domitory_Name=#{domitoryName}, Domitory_Type=#{domitoryType},
+        Domitory_Number=#{domitoryNumber}, Domitory_Tel=#{domitoryTel} where Domitory_ID=#{domitoryId}
+    </update>
+    <!--根据Id查询宿舍信息-->
+    <select id="getDomitroyByIdDao" resultMap="DomitoryMap" parameterType="int">
+        select
+        <include refid="DomitoryColumn"/>
+        from domitory where Domitory_ID=#{domitoryId}
+    </select>
+    <!--根据学生Id查询宿舍信息-->
+    <select id="getDomitoryByStudentIdDao" resultMap="DomitoryMap" parameterType="int">
+        select
+        <include refid="DomitoryColumn"/>
+        from domitory where Domitory_ID=#{studentId}
+    </select>
+    <!--根据楼宇Id查询宿舍-->
+    <select id="getDomitoryByBuildingIdDao" resultMap="DomitoryMap" parameterType="int">
+        select
+        <include refid="DomitoryColumn"/>
+        from domitory where Domitory_BuildingID=#{buildingId}
+    </select>
+</mapper>

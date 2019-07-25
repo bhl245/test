@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hgkj.model.dao.AdminMapper">
+    <resultMap id="AdminMap" type="com.hgkj.model.entity.Admin">
+        <id column="Admin_ID" property="adminId" jdbcType="INTEGER"/>
+        <result column="Admin_Username" property="adminUsername" jdbcType="VARCHAR"/>
+        <result column="Admin_Password" property="adminPassword" jdbcType="VARCHAR"/>
+        <result column="Admin_Name" property="adminName" jdbcType="VARCHAR"/>
+        <result column="Admin_Sex" property="adminSex" jdbcType="VARCHAR"/>
+        <result column="Admin_Tel" property="adminTel" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="AdminColumn">Admin_ID, Admin_Username, Admin_Password, Admin_Name, Admin_Sex, Admin_Tel</sql>
+    <!--管理员登录-->
+    <select id="adminLoginDao" resultMap="AdminMap" parameterType="Admin">
+        select
+        <include refid="AdminColumn"/>
+        from admin where Admin_Username=#{adminUsername} and Admin_Password=#{adminPassword}
+    </select>
+    <!--修改管理员密码-->
+    <update id="adminPwdUpdateDao" parameterType="Admin">
+        update admin set Admin_Password=#{adminPassword} where Admin_ID=#{adminId}
+    </update>
+    <!--根据Id查询管理员信息-->
+    <select id="getAdminByIdDao" resultMap="AdminMap" parameterType="int">
+        select
+        <include refid="AdminColumn"/>
+        from admin where Admin_ID=#{adminId}
+    </select>
+</mapper>

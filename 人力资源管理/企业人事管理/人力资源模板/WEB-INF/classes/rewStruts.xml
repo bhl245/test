@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<package name="rewStruts-default" extends="struts2" namespace="/rewards">
+	<!-- 判断显示奖励还是惩罚的信息 -->
+	<action name="rewSelect" class="com.kiko.action.RewAction">
+		<result name="success" type="redirectAction">rewShow!rewShows</result>
+	</action>
+	
+	<!-- 奖惩信息显示 -->
+	<action name="rewShow" class="com.kiko.action.RewAction">
+		<result name="success" type="redirect">rewardsMgr.jsp</result>
+	</action>
+	
+	<!-- 奖惩信息删除 -->
+	<action name="rewDel" class="com.kiko.action.RewAction">
+		<result name="success" type="redirectAction">rewShow!rewShows</result>
+		<result name="failure" type="redirect">rewardsMgr.jsp</result>
+	</action>
+	
+	<!-- 跳转至奖惩查看详情 -->
+	<action name="dSelectRew" class="com.kiko.action.RewAction">
+		<result name="success" type="redirect">rewardsSel.jsp</result>
+	</action>
+	
+</package>
+
+<package name="rewStrutAjax-default" extends="strutAjax" namespace="/rewards">
+	<!-- 添加奖惩信息 -->
+	<action name="rewAddAjax" class="com.kiko.action.RewAction">
+		<result type="json">
+			<param name="root">result</param>
+		</result>
+	</action>
+	
+</package>
+</struts>    

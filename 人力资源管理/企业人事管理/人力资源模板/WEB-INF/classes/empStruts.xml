@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<package name="empStruts-default" extends="struts2" namespace="/employee">
+	<!-- 判断显示哪个部门的员工 -->
+	<action name="edSelect" class="com.kiko.action.EmpAction">
+		<result name="success" type="redirectAction">empShow!empShows</result>
+	</action>
+	
+	<!-- 员工显示 -->
+	<action name="empShow" class="com.kiko.action.EmpAction">
+		<result name="success" type="redirect">employeeMgr.jsp</result>
+	</action>
+	
+	<!-- 员工删除 -->
+	<action name="empDel" class="com.kiko.action.EmpAction">
+		<result name="success" type="redirectAction">empShow!empShows</result>
+		<result name="failure" type="redirect">employeeMgr.jsp</result>
+	</action>
+	
+	<!-- 跳转至员工修改 -->
+	<action name="toEmpUpd" class="com.kiko.action.EmpAction">
+		<result name="success" type="redirect">employeeUpd.jsp</result>
+	</action>
+	
+</package>
+
+<package name="empStrutAjax-default" extends="strutAjax" namespace="/employee">
+	<!-- 员工添加 -->
+	<action name="empAddAjax" class="com.kiko.action.EmpAction">
+		<result type="json">
+			<param name="root">result</param>
+		</result>
+	</action>
+	
+	<!-- 加载页面时获取一个新员工编号 -->
+	<action name="empGetSerNumAjax" class="com.kiko.action.EmpAction">
+		<result type="json">
+			<param name="root">result</param>
+		</result>
+	</action>
+	
+	<!-- 员工修改 -->
+	<action name="empUpdAjax" class="com.kiko.action.EmpAction">
+		<result type="json">
+			<param name="root">result</param>
+		</result>
+	</action>
+	
+</package>
+</struts>    

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<package name="dptStruts-default" extends="struts2" namespace="/department">
+	<!-- 部门显示 -->
+	<action name="dptShow" class="com.kiko.action.DptAction">
+		<result name="success" type="redirect">departmentMgr.jsp</result>
+	</action>
+	
+	<!-- 部门删除 -->
+	<action name="dptDel" class="com.kiko.action.DptAction">
+		<result name="success" type="redirectAction">dptShow!dptShows</result>
+		<result name="failure" type="redirect">departmentMgr.jsp</result>
+	</action>
+	
+</package>
+
+<package name="dptStrutAjax-default" extends="strutAjax" namespace="/department">
+	<!-- 部门添加 -->
+	<action name="dptAddAjax" class="com.kiko.action.DptAction">
+		<result type="json">
+			<param name="root">result</param>
+		</result>
+	</action>
+	
+</package>
+</struts>    

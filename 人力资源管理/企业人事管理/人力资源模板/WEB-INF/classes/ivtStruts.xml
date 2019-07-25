@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+<package name="ivtStruts-default" extends="struts2" namespace="/invitejob">
+	<!-- 判断显示录用还是非录用的信息 -->
+	<action name="issSelect" class="com.kiko.action.IvtAction">
+		<result name="success" type="redirectAction">ivtShow!ivtShows</result>
+	</action>
+	
+	<!-- 应聘信息显示 -->
+	<action name="ivtShow" class="com.kiko.action.IvtAction">
+		<result name="success" type="redirect">invitejobMgr.jsp</result>
+	</action>
+	
+	<!-- 应聘信息删除 -->
+	<action name="ivtDel" class="com.kiko.action.IvtAction">
+		<result name="success" type="redirectAction">ivtShow!ivtShows</result>
+		<result name="failure" type="redirect">invitejobMgr.jsp</result>
+	</action>
+	
+	<!-- 跳转至应聘查看详情 -->
+	<action name="dSelectIvt" class="com.kiko.action.IvtAction">
+		<result name="success" type="redirect">invitejobSel.jsp</result>
+	</action>
+	
+</package>
+
+<package name="ivtStrutAjax-default" extends="strutAjax" namespace="/invitejob">
+	<!-- 添加应聘信息 -->
+	<action name="ivtAddAjax" class="com.kiko.action.IvtAction">
+		<result type="json">
+			<param name="root">result</param>
+		</result>
+	</action>
+	
+</package>
+</struts>    
